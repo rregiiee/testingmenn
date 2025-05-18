@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'fs/promises';
 import path from 'path';
 
-const dataFilePath = path.join(process.cwd(), 'data', 'alumni.json');
+const dataFilePath = path.join(process.cwd(), 'public', 'alumni.json');
 
 export async function PATCH(request) {
   try {

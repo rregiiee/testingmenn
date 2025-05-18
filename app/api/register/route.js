@@ -2,7 +2,7 @@ import { writeFile, readFile } from 'fs/promises';
 import path from 'path';
 import bcrypt from 'bcryptjs';
 
-const dataFilePath = path.join(process.cwd(), 'data', 'alumni.json');
+const dataFilePath = path.join(process.cwd(), 'public', 'alumni.json');
 
 export async function POST(request) {
   try {

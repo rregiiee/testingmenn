@@ -4,7 +4,7 @@ import { readFile } from "fs/promises";
 import path from "path";
 import bcrypt from "bcryptjs";
 
-const dataFilePath = path.join(process.cwd(), "data", "alumni.json"); // pastikan ini ke alumni.json
+const dataFilePath = path.join(process.cwd(), "public", "alumni.json"); // pastikan ini ke alumni.json
 
 const fixedUsers = [
   { username: "admin", password: "admin", role: "admin" },
@@ -37,7 +37,7 @@ const handler = NextAuth({
   }
 
   try {
-    const file = await readFile(path.join(process.cwd(), "data", "alumni.json"), "utf8");
+    const file = await readFile(path.join(process.cwd(), "public", "alumni.json"), "utf8");
     const users = JSON.parse(file);
 
     const user = users.find((u) => u.username === credentials.username);

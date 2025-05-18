@@ -38,5 +38,15 @@
     "email": "sadasd@gmail.com",
     "role": "alumni",
     "status": "active"
+  },
+  {
+    "id": "1747560810841",
+    "nama": "deni",
+    "username": "deni",
+    "password": "$2b$10$pLc6UwdE7kqwxk4C.A4jHOmuBKKGhicZSTkgDNaovpms/Qktk1SM6",
+    "noHp": "123123221",
+    "email": "sasdasd@gmail.com",
+    "role": "alumni",
+    "status": "active"
   }
 ]
