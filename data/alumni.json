@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1747554973396",
+    "nama": "atang",
+    "username": "atang",
+    "password": "$2b$10$cfSKbJT771gLK5F/VO8z.e32Gw7a/ZeYHpnK2PQeF50G7DeLD7ybG",
+    "noHp": "23423423",
+    "email": "asdassdqwe@gmail.com",
+    "role": "alumni",
+    "status": "active"
+  },
+  {
+    "id": "1747555415409",
+    "nama": "asep",
+    "username": "asep",
+    "password": "$2b$10$/65Vaa44UZjDCTF9yRVyUeEpA2b2bKtlnE8DlzIUzA4ckXucQfMh2",
+    "noHp": "3423423",
+    "email": "gimztamvan@gmail.com",
+    "role": "alumni",
+    "status": "active"
+  },
+  {
+    "id": "1747556138701",
+    "nama": "geby",
+    "username": "geby",
+    "password": "$2b$10$FKGlbneDLo2QeG6WrkDLRO3AuKb/6XbDxYLgIw.wH3siYyzNTY0G.",
+    "noHp": "34234234",
+    "email": "asdasdasdasd@gmail.com",
+    "role": "alumni",
+    "status": "active"
+  },
+  {
+    "id": "1747557442495",
+    "nama": "alumni",
+    "username": "alumni",
+    "password": "$2b$10$jPM/AmG8sJ.bcy4BlaVzCuwF6tXF/wdvnR7PAACtuyrlNERQYvTZa",
+    "noHp": "23423423",
+    "email": "sadasd@gmail.com",
+    "role": "alumni",
+    "status": "active"
+  }
+]
