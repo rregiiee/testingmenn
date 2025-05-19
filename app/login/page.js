@@ -95,7 +95,7 @@ export default function LoginPage() {
               <input
                 name="username"
                 type="text"
-                placeholder="Enter Your Username"
+                placeholder="akunnya: alumni1, admin1, dosen1"
                 required
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
@@ -105,7 +105,7 @@ export default function LoginPage() {
               <input
                 name="password"
                 type="password"
-                placeholder="Enter Your password"
+                placeholder="akunnya: alumni1, admin1, dosen1"
                 required
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
