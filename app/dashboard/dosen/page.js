@@ -1,28 +1,48 @@
-"use client";
+'use client'
+import { useEffect, useState } from 'react'
+import { auth, db } from '@/lib/firebase'
+import { doc, getDoc } from 'firebase/firestore'
+import { useRouter } from 'next/navigation'
 
-import { useSession, signOut } from "next-auth/react";
+export default function DashboardDosen() {
+  const [userData, setUserData] = useState(null)
+  const router = useRouter()
 
-export default function DosenDashboard() {
-  const { data: session } = useSession();
+  useEffect(() => {
+    async function fetchUserData() {
+      if (!auth.currentUser) {
+        router.push('/login')
+        return
+      }
 
-  if (!session) return <p>Loading...</p>;
+      const uid = auth.currentUser.uid
+      const docRef = doc(db, 'users', uid)
+      const docSnap = await getDoc(docRef)
+
+      if (!docSnap.exists()) {
+        router.push('/login')
+        return
+      }
+
+      const data = docSnap.data()
+      if (data.role !== 'dosen') {
+        router.push('/login')
+        return
+      }
+
+      setUserData(data)
+    }
+
+    fetchUserData()
+  }, [router])
+
+  if (!userData) return <p>Loading...</p>
 
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-4">Dashboard Dosen</h1>
-      <p>Selamat datang, {session.user.name}!</p>
-      <p>Role kamu: {session.user.role}</p>
-    <button
-  className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md shadow-md transition duration-200"
-  onClick={() => {
-    if (confirm("Apakah kamu yakin ingin logout?")) {
-      signOut({ callbackUrl: "/" });
-    }
-  }}
->
-  Logout
-</button>
-
+    <div>
+      <h1>Dashboard Dosen</h1>
+      <p>Halo, {userData.nama}</p>
+      {/* konten dashboard */}
     </div>
-  );
+  )
 }

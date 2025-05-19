@@ -1,63 +1,57 @@
-import { writeFile, readFile } from 'fs/promises';
-import path from 'path';
-import bcrypt from 'bcryptjs';
+import { db, auth } from '@/lib/firebase'
+import { collection, query, where, getDocs, setDoc, doc } from 'firebase/firestore'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import bcrypt from 'bcryptjs'
 
-const dataFilePath = path.join(process.cwd(), 'public', 'alumni.json');
-
-export async function POST(request) {
+export async function POST(req) {
   try {
-    const { nama, username, password, noHp, email } = await request.json();
+    const body = await req.json()
+    const { nama, username, password, noHp, email } = body
 
-    // Validasi lengkap
     if (!nama || !username || !password || !noHp || !email) {
-      return new Response(JSON.stringify({ message: 'Lengkapi semua field' }), { status: 400 });
+      return new Response(JSON.stringify({ message: 'Semua field wajib diisi' }), { status: 400 })
     }
 
-    // Baca data alumni lama (kalau ada)
-    let data = [];
-    try {
-      const file = await readFile(dataFilePath, 'utf-8');
-      data = JSON.parse(file);
-    } catch (err) {
-      // File belum ada, bikin baru
-      console.log('File data belum ada, membuat file baru.');
+    const usersRef = collection(db, 'users')
+
+    // Cek username sudah ada atau belum
+    const usernameQuery = query(usersRef, where('username', '==', username))
+    const usernameSnapshot = await getDocs(usernameQuery)
+    if (!usernameSnapshot.empty) {
+      return new Response(JSON.stringify({ message: 'Username sudah digunakan' }), { status: 400 })
     }
 
-    // Cek email atau username sudah ada
-    const emailExists = data.find(user => user.email === email);
-    const usernameExists = data.find(user => user.username === username);
-
-    if (emailExists) {
-      return new Response(JSON.stringify({ message: 'Email sudah terdaftar' }), { status: 409 });
-    }
-    if (usernameExists) {
-      return new Response(JSON.stringify({ message: 'Username sudah digunakan' }), { status: 409 });
+    // Cek email sudah ada atau belum
+    const emailQuery = query(usersRef, where('email', '==', email))
+    const emailSnapshot = await getDocs(emailQuery)
+    if (!emailSnapshot.empty) {
+      return new Response(JSON.stringify({ message: 'Email sudah digunakan' }), { status: 400 })
     }
 
     // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10)
 
-    // Tambah alumni baru status pending
-    const newAlumni = {
-      id: Date.now().toString(),
+    // Buat user di Firebase Authentication
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+    const firebaseUser = userCredential.user
+
+    // Simpan data user di Firestore dengan UID dari Firebase Auth
+    await setDoc(doc(db, 'users', firebaseUser.uid), {
       nama,
       username,
       password: hashedPassword,
-      noHp,
+      rawPassword: password, // sebenarnya jangan simpan raw password di production
+      nohp: noHp,
       email,
       role: 'alumni',
-      status: 'pending',
-    };
+      status: 'pending', // supaya admin bisa verifikasi dulu
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    })
 
-    data.push(newAlumni);
-
-    // Simpan data baru ke file
-    await writeFile(dataFilePath, JSON.stringify(data, null, 2));
-
-    return new Response(JSON.stringify({ message: 'Pendaftaran berhasil, tunggu verifikasi admin.' }), { status: 201 });
-
+    return new Response(JSON.stringify({ message: 'Registrasi berhasil, tunggu verifikasi admin' }), { status: 200 })
   } catch (error) {
-    console.error(error);
-    return new Response(JSON.stringify({ message: 'Terjadi kesalahan server' }), { status: 500 });
+    console.error('Error registrasi:', error)
+    return new Response(JSON.stringify({ message: 'Terjadi kesalahan server' }), { status: 500 })
   }
 }

@@ -1,5 +1,4 @@
 'use client'
-
 import { useState } from 'react'
 
 export default function RegisterPage() {
@@ -23,7 +22,6 @@ export default function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    // Validasi sederhana di client side
     if (
       !formData.nama.trim() ||
       !formData.username.trim() ||

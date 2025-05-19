@@ -1,18 +1,15 @@
 // app/layout.js
+import './globals.css';
 
-"use client";
-import './globals.css'
-
-import { SessionProvider } from "next-auth/react";
+export const metadata = {
+  title: 'My App',
+  description: 'My Next.js Firebase Auth App',
+};
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body>
-        <SessionProvider>
-          {children}
-        </SessionProvider>
-      </body>
+    <html lang="id">
+      <body>{children}</body>
     </html>
   );
 }
